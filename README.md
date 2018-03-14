@@ -1,41 +1,19 @@
 ## PyTorch2Caffe
 
-Ported from [pytorch-caffe-darknet-convert](https://github.com/marvis/pytorch-caffe-darknet-convert). 
+Ported from [pytorch2caffe](https://github.com/longcw/pytorch2caffe). 
 
 Add support for 
-+ Dilated Convolution Layer
-+ Concat Layer
-+ Upsampling (converted to Deconvolution with bilinear initialization)
-+ Eltwise Product
-+ Sigmoid Layer
-
-```python
-# We can obtain almost the same output from caffe except Upsampling
-# for inception_v3: 
-# diff between pytorch and caffe: min: 0.0, max: 1.76429748535e-05, mean: 2.14079022953e-06
-# see more in demo.py
-
-import torch
-from torch.autograd import Variable
-import torchvision
-
-import os
-from pytorch2caffe import pytorch2caffe, plot_graph
-
-m = torchvision.models.inception_v3(pretrained=True, transform_input=False)
-m.eval()
-print(m)
-
-input_var = Variable(torch.rand(1, 3, 299, 299))
-output_var = m(input_var)
-
-output_dir = 'demo'
-# plot graph to png
-plot_graph(output_var, os.path.join(output_dir, 'inception_v3.dot'))
-
-pytorch2caffe(input_var, output_var, 
-              os.path.join(output_dir, 'inception_v3-pytorch2caffe.prototxt'),
-              os.path.join(output_dir, 'inception_v3-pytorch2caffe.caffemodel'))
++ Slice Layer (IndexBackward in PyTorch)
 
 ```
+We can obtain almost the same output from caffe except Upsampling
+for [beyond-part-models](https://github.com/huanghoujing/beyond-part-models): 
+diff between pytorch and caffe: min: 0.0, max: 0.466215610504, mean: 0.0415956825018, median: 0.000256508588791
+see more in demo.py
+```
+
+# Note
+
+This tool only support for PyTorch version less than 0.3.0
+I cannot find how to access layer parameters in 0.3.0+ PyTorch :)
 
