@@ -12,8 +12,9 @@ diff between pytorch and caffe: min: 0.0, max: 0.466215610504, mean: 0.041595682
 see more in demo.py
 ```
 
-# Note
+# Notice
 
 This tool only support for PyTorch version less than 0.3.0
+
 I cannot find how to access layer parameters in 0.3.0+ PyTorch :)
 
